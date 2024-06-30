@@ -64,7 +64,6 @@ const quill3 = new Quill('#editor-twemoji', {
     }
 });
 
-
 const quill4 = new Quill('#editor-open-menu-outside', {
     theme: 'snow',
     modules: {
@@ -84,4 +83,21 @@ const quill4 = new Quill('#editor-open-menu-outside', {
 document.querySelector('#open-menu').addEventListener('click', () => {
     const module = quill4.getModule("fazEmoji");
     module.openMenu();
+});
+
+
+const quill5 = new Quill('#editor-openmoji', {
+    theme: 'snow',
+    modules: {
+        toolbar: {
+            container: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
+            handlers: {
+                'faz-emoji': true //  To avoid the warning message: 'logger.ts:8 quill:toolbar ignoring attaching to nonexistent format faz-emoji' 
+            },
+        },
+        fazEmoji: {
+            collection: 'openmoji',
+            popper: window.Popper
+        }
+    }
 });
