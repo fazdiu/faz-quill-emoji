@@ -1,9 +1,3 @@
-a{
-    &:hover{
-        color:red
-    }
-}
-
 .faz-emoji {
     vertical-align: middle;
     display: inline-block;
@@ -97,7 +91,8 @@ a{
 
 .faz-quill-emoji-list {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
 }
 
 .faz-quill-emoji-item {
@@ -131,8 +126,7 @@ a{
 }
 
 .faz-quill-emoji-box-search {
-    padding: 14px;
-    padding-top: 0;
+    padding-right: 14px;
     padding-bottom: 8px;
     position: absolute;
     top: 0;
@@ -183,6 +177,29 @@ a{
     height: 1.25rem;
 }
 
+.faz-quill-emoji-list-placeholder {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 10px;
+}
+
+.faz-quill-emoji-item-placeholder {
+    aspect-ratio: 1/1;
+    border-radius: 12px;
+    background: #F3F4F6;
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.faz-quill-emoji-tab-placeholder {
+    border-radius: 8px;
+    background: #F3F4F6;
+
+    min-width: 32px;
+    min-height: 32px;
+    margin-bottom:10px;
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
 /* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
 /** {
   scrollbar-width: thin;
@@ -230,3 +247,9 @@ a{
         opacity: 1;
     }
 }
+
+@keyframes pulse {
+    50% {
+      opacity: .5;
+    }
+  }

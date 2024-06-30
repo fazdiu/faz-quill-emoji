@@ -23,13 +23,16 @@ const quill = new Quill('#editor', {
     }
 });
 
+// const module = quill.getModule("fazEmoji");
+// module.openMenu();
+
 const quill2 = new Quill('#editor-popper', {
     theme: 'snow',
     modules: {
         toolbar: {
             container: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
             handlers: {
-               'faz-emoji': true //  To avoid the warning message: 'logger.ts:8 quill:toolbar ignoring attaching to nonexistent format faz-emoji' 
+                'faz-emoji': true //  To avoid the warning message: 'logger.ts:8 quill:toolbar ignoring attaching to nonexistent format faz-emoji' 
             },
         },
         fazEmoji: {
@@ -78,5 +81,5 @@ const quill4 = new Quill('#editor-open-menu-outside', {
 
 document.querySelector('#open-menu').addEventListener('click', () => {
     const module = quill4.getModule("fazEmoji");
-    console.log("module:", module.openMenu());
+    module.openMenu();
 });

@@ -83,11 +83,10 @@ const EmojiCore = class EmojisWrapper {
     /**
      * Start or open the drop-down menu
      */
-    async openDropdown() {
+    openDropdown() {
         if (!this.dropdown) {
             const collectionName = this.options.collection;
 
-            const fragment = document.createDocumentFragment();
             const dropdown = this.makeElement('div', {
                 styles: {
                     left: 0,
@@ -100,157 +99,186 @@ const EmojiCore = class EmojisWrapper {
                 className: ['dropdown', collectionName]
             });
             dropdown.innerHTML = templateHTML;
-            fragment.appendChild(dropdown);
 
             const element = {
                 templateTab: dropdown.querySelector('template#tab'),
                 templateTabPanel: dropdown.querySelector('template#tab-panel'),
+
+                tabPlaceholder: dropdown.querySelector('.tab-placeholder'),
+                listPlaceholder: dropdown.querySelector('.list-placeholder'),
+                listItemPlaceholder: dropdown.querySelector('.item-placeholder'),
+
                 loader: dropdown.querySelector(`.loader`),
                 tabList: dropdown.querySelector(`.tab-list`),
                 tabPanels: dropdown.querySelector(`.tab-panels`),
                 scroll: dropdown.querySelector(`.scroll`),
             }
             const scrollEl = element.scroll;
+            const tabListEl = element.tabList;
 
             element.loader.innerHTML = icons.loading;
             this.loader.element = element.loader;
 
-            const tabs = await this.getEmojisByCategory(collectionName);
+            // create placeholder
+            Array.from({ length: 7 }, () => {
+                const placeholder = element.tabPlaceholder;
+                const clone = placeholder.cloneNode();
+                placeholder.parentElement.appendChild(clone);
+            });
+            Array.from({ length: 29 }, () => {
+                const placeholder = element.listItemPlaceholder;
+                const clone = placeholder.cloneNode();
+                placeholder.parentElement.appendChild(clone);
+            });
 
-            this.tabGroup = tabs.map((item) => {
-                const { name, icon, categoryName } = item;
+            this.getEmojisByCategory(collectionName).then((tabs) => {
+              
+                const fragmentTabList = document.createDocumentFragment();
+                const fragmentTabPanels = document.createDocumentFragment();
 
-                const templateTab = element.templateTab;
-                const tabEl = templateTab.content.cloneNode(true).firstElementChild;
-                tabEl.innerHTML = icon;
-                tabEl.setAttribute('data-emoji-category', name);
-                tabEl.setAttribute('data-emoji-category-or', categoryName);
-                templateTab.parentElement.appendChild(tabEl);
+                this.tabGroup = tabs.map((item) => {
+                    const { name, icon, categoryName } = item;
+
+                    const templateTab = element.templateTab;
+                    const tabEl = templateTab.content.cloneNode(true).firstElementChild;
+                    tabEl.innerHTML = icon;
+                    tabEl.setAttribute('data-emoji-category', name);
+                    tabEl.setAttribute('data-emoji-category-or', categoryName);
+                    fragmentTabList.appendChild(tabEl);
+
+                    const templateTabPanel = element.templateTabPanel;
+                    const tabPanelEl = templateTabPanel.content.cloneNode(true).firstElementChild;
+                    tabPanelEl.setAttribute('data-emoji-category', name);
+                    fragmentTabPanels.appendChild(tabPanelEl);
+
+                    const emojiListEl = tabPanelEl.querySelector(`.list`);
+                    const boxSearchEl = tabPanelEl.querySelector(`.box-search`);
+                    const result = {
+                        ...item,
+                        tabElement: tabEl,
+                        tabPanelElement: tabPanelEl,
+                        emojiListElement: emojiListEl
+                    }
 
 
-                const templateTabPanel = element.templateTabPanel;
-                const tabPanelEl = templateTabPanel.content.cloneNode(true).firstElementChild;
-                tabPanelEl.setAttribute('data-emoji-category', name);
-                templateTabPanel.parentElement.appendChild(tabPanelEl);
+                    // search box
+                    if (name == 'all') {
+                        const searchInputEl = boxSearchEl.querySelector(`input`);
+
+                        const searchIconEl = this.makeElement('span', { html: icons.search });
+                        searchInputEl.parentElement.prepend(searchIconEl);
+
+                        result.searchInputElement = searchInputEl;
+
+                        let active = null;
+                        let timeoutId = null;
+                        searchInputEl.addEventListener('input', (e) => {
+                            clearTimeout(timeoutId);
+                            timeoutId = setTimeout(() => {
+
+                                emojiListEl.innerHTML = '';
+                                active && (active.currentPage = 0);
+
+                                this.loadEmojisInActiveTab('first').then((v) => active = v);
+                         
+                            }, 300);
+                        });
+
+                    } else {
+                        boxSearchEl.remove();
+                    }
 
 
-                const emojiListEl = tabPanelEl.querySelector(`.list`);
-                const boxSearchEl = tabPanelEl.querySelector(`.box-search`);
-                const result = {
-                    ...item,
-                    tabElement: tabEl,
-                    tabPanelElement: tabPanelEl,
-                    emojiListElement: emojiListEl
-                }
+                    tabEl.addEventListener('click', async (e) => {
 
+                        this.tabGroup.forEach((e) => {
+                            e.tabElement.classList.remove('active');
+                            e.tabPanelElement.style.display = 'none';
+                        });
+                        tabEl.classList.add('active');
+                        tabPanelEl.style.display = '';
 
-                // search box
-                if (name == 'all') {
-                    const searchInputEl = boxSearchEl.querySelector(`input`);
+                        await this.loadEmojisInActiveTab('first');
 
-                    const searchIconEl = this.makeElement('span', { html: icons.search });
-                    searchInputEl.parentElement.prepend(searchIconEl);
-
-                    result.searchInputElement = searchInputEl;
-
-                    let active = null;
-                    let timeoutId = null;
-                    searchInputEl.addEventListener('input', (e) => {
-                        clearTimeout(timeoutId);
-                        timeoutId = setTimeout(() => {
-
-                            emojiListEl.innerHTML = '';
-                            active && (active.currentPage = 0);
-
-                            this.loadEmojisInActiveTab('first').then((v) => active = v);
-
-                        }, 300);
+                        // Reset the scroll bar
+                        const st = scrollEl.scrollTop;
+                        scrollEl.scrollTop = st > 18 ? st - 18 : st;
                     });
 
-                } else {
-                    boxSearchEl.remove();
-                }
-
-
-                tabEl.addEventListener('click', async (e) => {
-
-                    this.tabGroup.forEach((e) => {
-                        e.tabElement.classList.remove('active');
-                        e.tabPanelElement.style.display = 'none';
-                    });
-                    tabEl.classList.add('active');
-                    tabPanelEl.style.display = '';
-
-                    await this.loadEmojisInActiveTab('first');
-
-                    // Reset the scroll bar
-                    const st = scrollEl.scrollTop;
-                    scrollEl.scrollTop = st > 18 ? st - 18 : st;
+                    return result
                 });
 
-                return result
-            });
+                this.rewriteClassNames(fragmentTabList);
+                this.rewriteClassNames(fragmentTabPanels);
 
-            let timeoutId = undefined;
-            let lastScrollTop = 0;
-            const scrollHandle = (evt) => {
-                clearTimeout(timeoutId);
+                tabListEl.innerHTML = '';
+                scrollEl.innerHTML = '';
 
-                timeoutId = setTimeout(() => {
-                    const target = scrollEl;
+                tabListEl.appendChild(fragmentTabList);
+                scrollEl.appendChild(fragmentTabPanels);
 
-                    // !! detecting end of scroll in a div @see https://stackoverflow.com/questions/67549676/detecting-end-of-scroll-in-a-div @see https://stackoverflow.com/questions/31223341/detecting-scroll-direction
-                    const st = target.scrollTop;
-                    // downscroll code
-                    if (st > lastScrollTop) {
-                        const c1 = st + target.offsetHeight;
-                        const c2 = target.scrollHeight;
-                        const isEnd = Math.round(c1) + 5 >= c2;
+                let timeoutId = undefined;
+                let lastScrollTop = 0;
+                const scrollHandle = (evt) => {
+                    clearTimeout(timeoutId);
 
-                        if (isEnd) {
-                            this.loadEmojisInActiveTab('next');
+                    timeoutId = setTimeout(() => {
+                        const target = scrollEl;
+
+                        // !! detecting end of scroll in a div @see https://stackoverflow.com/questions/67549676/detecting-end-of-scroll-in-a-div @see https://stackoverflow.com/questions/31223341/detecting-scroll-direction
+                        const st = target.scrollTop;
+                        // downscroll code
+                        if (st > lastScrollTop) {
+                            const c1 = st + target.offsetHeight;
+                            const c2 = target.scrollHeight;
+                            const isEnd = Math.round(c1) + 5 >= c2;
+
+                            if (isEnd) {
+                                this.loadEmojisInActiveTab('next');
+                            }
+
                         }
+                        // upscroll code
+                        else if (st < lastScrollTop) {
 
-                    }
-                    // upscroll code
-                    else if (st < lastScrollTop) {
+                        }
+                        lastScrollTop = st <= 0 ? 0 : st;
 
-                    }
-                    lastScrollTop = st <= 0 ? 0 : st;
+                    }, 50);
 
-                }, 50);
+                };
+                const heightTabList = element.tabList.offsetHeight;
+                scrollEl.style.height = `${heightTabList}px`;
 
-            };
 
-            // rewrite all class names
-            fragment.querySelectorAll('*').forEach((el) => {
-                const classNames = [...el.classList].map((cls) => `${this.CSS.prefix}-${cls}`);
-                el.setAttribute('class', classNames.join(' '));
+                scrollHandle();
+                scrollEl.addEventListener('scroll', scrollHandle)
+                this.tabGroup[0].tabElement.click();
             });
+
+            this.rewriteClassNames(dropdown);
 
             // remove template
             element.templateTab.remove();
             element.templateTabPanel.remove();
 
-            this.quill.container.appendChild(fragment);
+            // this.quill.container.appendChild(fragment);
+            this.quill.container.appendChild(dropdown);
             this.dropdown = dropdown;
 
-            const heightTabList = element.tabList.offsetHeight;
-            scrollEl.style.height = `${heightTabList}px`;
             this.setStyle(dropdown, {
                 display: 'none',
                 visibility: '',
                 'pointer-events': ''
             });
 
-            scrollHandle();
-            scrollEl.addEventListener('scroll', scrollHandle)
-            this.tabGroup[0].tabElement.click();
         }
 
+        this.setStyle(this.dropdown, { display: '' });
         this.dropdown.classList.add('show');
-        this.attachOrRemoveClickOutside();
+
         this.positioningEngineDropdown();
+        this.attachOrRemoveClickOutside();
     }
 
     /**
@@ -275,8 +303,6 @@ const EmojiCore = class EmojisWrapper {
         const selection = quill.getSelection();
         const editorBounds = quill.container.getBoundingClientRect();
         const selectionBounds = quill.getBounds(selection ? selection.index : 0);
-
-        this.setStyle(dropdown, { display: '' });
 
         const _Popper = this.options.popper;
         if (_Popper) {
@@ -640,6 +666,28 @@ const EmojiCore = class EmojisWrapper {
         }
 
         return element;
+    }
+
+
+    /**
+     * Rewrite all class names with prefix
+     * @param {Element} [element] 
+     */
+    rewriteClassNames(element) {
+        const prefix = this.CSS.prefix;
+        const all = [...element.querySelectorAll('*')];
+        [element].concat(all).forEach((el) => {
+            if (!el.classList) return;
+
+            const classNames = [...el.classList].map((cls) => {
+                cls = cls.trim();
+
+                if (!cls) return cls;
+
+                return cls.startsWith(prefix) ? cls : `${prefix}-${cls}`;
+            });
+            el.setAttribute('class', classNames.join(' '));
+        });
     }
 
 }

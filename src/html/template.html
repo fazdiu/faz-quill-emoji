@@ -3,24 +3,28 @@
         <div class="tab-panels">
             <div class="scroll"
                 style="overflow-y: auto;overflow-x: hidden;scroll-behavior: smooth;overscroll-behavior: contain;">
-                <template id="tab-panel">
-                    <div class="tab-panel">
-                        <div class="box-search">
-                            <div class="input-group">
-                                <input type="text" name="input-search" />
-                            </div>
-                        </div>
-                        <div class="latest-list"></div>
-                        <div class="list"></div>
-                    </div>
-                </template>
+                <div class="list-placeholder">
+                    <div class="item-placeholder"></div>
+                </div>
             </div>
         </div>
         <div class="tab-list">
-            <template id="tab">
-                <button type="button" class="tab"></button>
-            </template>
+            <div class="tab-placeholder"></div>
         </div>
     </div>
-    <div class="loader"></div>
+    <div class="loader" style="display:none"></div>
+    <template id="tab-panel">
+        <div class="tab-panel">
+            <div class="box-search">
+                <div class="input-group">
+                    <input type="text" name="input-search" />
+                </div>
+            </div>
+            <div class="latest-list"></div>
+            <div class="list"></div>
+        </div>
+    </template>
+    <template id="tab">
+        <button type="button" class="tab"></button>
+    </template>
 </div>
