@@ -1,0 +1,232 @@
+a{
+    &:hover{
+        color:red
+    }
+}
+
+.faz-emoji {
+    vertical-align: middle;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+}
+
+.quill-emoji svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    vertical-align: middle;
+    display: inline-block;
+}
+
+.faz-quill-emoji-tab-group {
+    display: flex;
+    flex-direction: row;
+}
+
+.faz-quill-emoji-tab-list {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10px;
+}
+
+.faz-quill-emoji-tab {
+    font-size: 1.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    min-height: 28px;
+    padding: 0;
+    margin-bottom: 10px;
+    padding-left: 10px;
+    background-color: transparent;
+    border: 0;
+    position: relative;
+    transition: all 300ms ease-in-out;
+    cursor: pointer;
+    color: #6b7280
+}
+
+.faz-quill-emoji-tab svg {
+    fill: currentColor;
+    width: 20px;
+    height: 20px;
+}
+
+.faz-quill-emoji-tab:last-child {
+    margin-right: 0;
+}
+
+.faz-quill-emoji-tab::before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 100%;
+    width: 3px;
+    background: transparent;
+    border-radius: 9999px;
+    transition: all 300ms ease-in-out;
+}
+
+.faz-quill-emoji-tab.active,
+.faz-quill-emoji-loader svg {
+    color: #1d4ed8
+}
+
+.faz-quill-emoji-tab.active::before {
+    background: #1d4ed8;
+}
+
+.faz-quill-emoji-tab-panels {
+    width: 100%;
+    position: relative;
+}
+
+.faz-quill-emoji-tab-panel {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+[data-emoji-category="all"] .faz-quill-emoji-list {
+    padding-top: 50px
+}
+
+.faz-quill-emoji-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.faz-quill-emoji-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1/1;
+    font-size: 1.15rem;
+    cursor: pointer
+}
+
+.faz-quill-emoji-item img {
+    width: 24px;
+    height: 24px;
+}
+
+.faz-quill-emoji-dropdown.show {
+    opacity: 1;
+    animation: FadeIn 300ms ease-in-out;
+}
+
+.faz-quill-emoji-dropdown-content {
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: rgba(0, 0, 0, 0.14) 0.3px 0.5px 2.7px 0px, rgba(0, 0, 0, 0.14) 0.4px 0.8px 1px -3.2px, rgba(0, 0, 0, 0.14) 1px 2px 2.5px -4.5px;
+    color: #374151;
+    background: white;
+    width: 350px;
+
+    position: relative;
+}
+
+.faz-quill-emoji-box-search {
+    padding: 14px;
+    padding-top: 0;
+    padding-bottom: 8px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10;
+}
+
+.faz-quill-emoji-input-group {
+    position: relative;
+}
+
+.faz-quill-emoji-input-group svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+    width: 22px;
+    height: 22px;
+}
+
+.faz-quill-emoji-input-group input {
+    padding: 14px 10px;
+    padding-left: 40px;
+    font-size: 14px;
+    width: 100%;
+    display: block;
+    border-radius: 12px;
+    border: 0;
+    background: #f3f4f6;
+    color: #6b7280;
+}
+
+.faz-quill-emoji-input-group input:focus {
+    outline: none;
+}
+
+.faz-quill-emoji-loader {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    z-index: 10;
+}
+
+.faz-quill-emoji-loader svg {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+/* Firefox (uncomment to work in Firefox, although other properties will not work!)  */
+/** {
+  scrollbar-width: thin;
+  scrollbar-color: #E5E7EB #F3F4F6;
+}*/
+
+/* Chrome, Edge and Safari */
+*::-webkit-scrollbar {
+    height: 7px;
+    width: 7px;
+}
+
+*::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #F3F4F6;
+}
+
+*::-webkit-scrollbar-track:hover {
+    background-color: #F3F4F6;
+}
+
+*::-webkit-scrollbar-track:active {
+    background-color: #F3F4F6;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #E5E7EB;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: #E5E7EB;
+}
+
+*::-webkit-scrollbar-thumb:active {
+    background-color: #E5E7EB;
+}
+
+@keyframes FadeIn {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet">
+    <link href="app.css" rel="stylesheet">
+
+    <script src="https://unpkg.com/@popperjs/core@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+
+    <title>Faz Quill emoji</title>
+</head>
+
+<body>
+    <div>
+        <h2>Editor - Emojis Native</h2>
+        <div id="editor" style="height: 20vh;width:100%"></div>
+    </div>
+
+    <div>
+        <h2>Editor - Positioning with Popper </h2>
+        <div id="editor-popper" style="height: 20vh;width:100%">
+            <p>hi world </p>
+            <p><br></p>
+            <p><br></p>
+        </div>
+    </div>
+
+    <div>
+        <h2>Editor - twemoji </h2>
+        <div id="editor-twemoji" style="height: 20vh;width:100%"></div>
+    </div>
+
+    <div>
+        <h2>Editor - Open menu from outside</h2>
+        <button type="button" id="open-menu">Click here to open the drop-down menu</button>
+        <div id="editor-open-menu-outside" style="height: 20vh;width:100%"></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
