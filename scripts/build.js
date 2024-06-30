@@ -1,4 +1,5 @@
 import * as esbuild from 'esbuild'
+import { minifyTemplates, writeFiles } from 'esbuild-minify-templates';
 
 const name = 'faz-quill-emoji';
 
@@ -45,13 +46,13 @@ build({
     outfile: `dist/${name}.cjs.js`
 });
 
-function build(options) {
+async function build(options) {
     const licenseText = `/*!
     * Faz quill emoji 0.1.0
     * Licensed under MIT, https://opensource.org/licenses/MIT/
     * Please visit https://github.com/fazdiu/faz-quill-emoji for details.
     */`;
-    return esbuild.buildSync({
+    return await esbuild.build({
         entryPoints: ['src/index.js'],
         bundle: true,
         minify: true,
@@ -66,6 +67,8 @@ function build(options) {
             'es2016',
             // 'node12'
         ],
+        plugins: [minifyTemplates(), writeFiles()],
+        write: false, // <-- important!
         ...options
     })
 }
