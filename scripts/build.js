@@ -1,21 +1,6 @@
 import * as esbuild from 'esbuild'
 
 const name = 'faz-quill-emoji';
-build({
-    platform: 'browser',
-    outfile: `dist/${name}.iife.js`
-});
-
-build({
-    platform: 'neutral',
-    outfile: `dist/${name}.esm.js`,
-    mainFields: ['main', 'module'],
-});
-
-build({
-    platform: 'node',
-    outfile: `dist/${name}.cjs.js`
-});
 
 build({
     entryPoints: ['src/css/faz.quill.emoji.css'],
@@ -26,6 +11,38 @@ build({
         'firefox57',
         'safari11',
     ]
+});
+
+// autoregister
+build({
+    entryPoints: ['src/autoregister.js'],
+    platform: 'browser',
+    outfile: `dist/autoregister/${name}.iife.js`
+});
+
+build({
+    entryPoints: ['src/autoregister.js'],
+    platform: 'neutral',
+    outfile: `dist/autoregister/${name}.esm.js`,
+    mainFields: ['main', 'module'],
+});
+
+build({
+    entryPoints: ['src/autoregister.js'],
+    platform: 'node',
+    outfile: `dist/autoregister/${name}.cjs.js`
+});
+
+// Manual Registration
+build({
+    platform: 'neutral',
+    outfile: `dist/${name}.esm.js`,
+    mainFields: ['main', 'module'],
+});
+
+build({
+    platform: 'node',
+    outfile: `dist/${name}.cjs.js`
 });
 
 function build(options) {

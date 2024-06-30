@@ -33,13 +33,17 @@
     "./dist"
   ],
   "type": "module",
-  "main": "./dist/index.cjs.js",
-  "module": "./dist/index.esm.js",
+  "main": "./dist/faz-quill-emoji.cjs.js",
+  "module": "./dist/faz-quill-emoji.esm.js",
   "exports": {
     ".": {
-      "require": "./dist/index.cjs.js",
-      "import": "./dist/index.esm.js"
+      "require": "./dist/faz-quill-emoji.cjs.js",
+      "import": "./dist/faz-quill-emoji.esm.js"
+    },
+    "./autoregister": {
+      "require": "./dist/autoregister/faz-quill-emoji.cjs.js",
+      "import": "./dist/autoregister/faz-quill-emoji.esm.js"
     }
   },
-  "unpkg": "./dist/index.iife.js"  
+  "unpkg": "./dist/autoregister/faz-quill-emoji.iife.js"  
 }

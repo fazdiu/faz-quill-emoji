@@ -13,7 +13,34 @@ npm i faz-quill-emoji
 
 #### Use as ES6 module (recommended):
 
+Manual Registration:
+
 ```
+import RegisterFazQuillEmoji from "faz-quill-emoji";
+
+RegisterFazQuillEmoji(Quill);
+
+const quill = new Quill('#editor', {
+    theme: 'snow',
+    modules: {
+        toolbar: {
+            container: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
+            handlers: {
+                'faz-emoji': true  
+            },
+        },
+        fazEmoji: {
+            collection: 'fluent-emoji'
+        }
+    }
+});
+```
+
+Automatic registration:
+
+```
+import "faz-quill-emoji/autoregister";
+
 const quill = new Quill('#editor', {
     theme: 'snow',
     modules: {
