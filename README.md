@@ -79,7 +79,7 @@ Use the standalone files like this:
 
 ### Examples
 
-All the examples described are in the [Demo](./demo/) folder
+All the examples described are in the [Demo](./demo) folder
 
 1. [Basic](./demo/index.html)
 2. [Popper Positioning](./demo/index.html)
