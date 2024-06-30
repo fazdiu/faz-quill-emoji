@@ -3,7 +3,6 @@ Faz Quill Emojis is a module that provides the functionality to easily add emoji
 
 ## Quickstart
 
-
 ### Installation
 
 Install with npm:
@@ -15,17 +14,17 @@ npm i faz-quill-emoji
 #### Use as ES6 module (recommended):
 
 ```
-import RegisterFazQuillEmoji from "faz-quill-emoji";
-
-RegisterFazQuillEmoji(Quill);
-
-const quill = new Quill('#editor-twemoji', {
+const quill = new Quill('#editor', {
     theme: 'snow',
     modules: {
-        toolbar: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
+        toolbar: {
+            container: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
+            handlers: {
+                'faz-emoji': true  
+            },
+        },
         fazEmoji: {
-            collection: 'twemoji',
-            popper: window.Popper
+            collection: 'fluent-emoji'
         }
     }
 });
@@ -64,7 +63,12 @@ Use the standalone files like this:
     const quill = new Quill('#editor', {
         theme: 'snow',
         modules: {
-            toolbar: ['faz-emoji'],
+            toolbar: {
+                container: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
+                handlers: {
+                    'faz-emoji': true  
+                },
+            },
             fazEmoji: {
                 collection: 'fluent-emoji'
             }
@@ -90,7 +94,12 @@ All the examples described are in the [Demo](./demo/) folder
 const quill = new Quill('#editor', {
     theme: 'snow',
     modules: {
-        toolbar: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
+        toolbar: {
+            container: ['bold', 'italic', 'underline', 'strike', 'faz-emoji'],
+            handlers: {
+                'faz-emoji': true  
+            },
+        },
         fazEmoji: {
             collection: 'fluent-emoji', 
             rewriteCDNURL(url) {
