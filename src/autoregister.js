@@ -1,5 +1,6 @@
+import Quill from "quill";
 import RegisterFazQuillEmoji from "./";
 
-document.addEventListener('DOMContentLoaded', () => {
-    RegisterFazQuillEmoji(window.Quill);
-});
+RegisterFazQuillEmoji(Quill);
+
+export default RegisterFazQuillEmoji

@@ -1,12 +1,14 @@
+import "quill/dist/quill.snow.css";
 import '../src/css/faz.quill.emoji.css';
 
+import Quill from 'quill';
 import RegisterFazQuillEmoji from "../src";
+
+RegisterFazQuillEmoji(Quill);
 
 // Custom button, or override the svg icons on toolbar @see https://github.com/slab/quill/issues/1099
 // const icons = Quill.import('ui/icons');
 // icons['faz-emoji'] = 'new icon';
-
-RegisterFazQuillEmoji(Quill);
 
 const quill = new Quill('#editor', {
     theme: 'snow',

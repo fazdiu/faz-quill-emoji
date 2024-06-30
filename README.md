@@ -1,6 +1,9 @@
 # Faz Quill Emoji
 Faz Quill Emojis is a module that provides the functionality to easily add emojis to the Quill rich text editor with support for multiple open-source emoji collections such as: `openmoji`, `twemoji`, `noto`, `fluent-emoji`, `fluent-emoji-flat`, `fluent-emoji-high-contrast`, `noto-v1`, `emojione`, `emojione-monotone`, `emojione-v1`, `fxemoji`, `streamline-emojis` always prioritizing being lightweight and powerful.
 
+| ![fluent-emoji!](./demo/screenshot/fluent-emoji.png "fluent-emoji")  | ![noto!](./demo/screenshot/noto.png "noto")   | ![twemoji!](./demo/screenshot/twemoji.png "twemoji")   |
+|---|---|---|
+
 ## Quickstart
 
 ### Installation
@@ -16,6 +19,7 @@ npm i faz-quill-emoji
 Manual Registration:
 
 ```
+import Quill from 'quill';
 import RegisterFazQuillEmoji from "faz-quill-emoji";
 
 RegisterFazQuillEmoji(Quill);
@@ -39,6 +43,7 @@ const quill = new Quill('#editor', {
 Automatic registration:
 
 ```
+import Quill from 'quill';
 import "faz-quill-emoji/autoregister";
 
 const quill = new Quill('#editor', {
@@ -62,7 +67,7 @@ const quill = new Quill('#editor', {
 Styles are present under
 
 ```
-import "faz-quill-emoji/dist/faz-quill-emoji.css";
+import "faz-quill-emoji/dist/faz.quill.emoji.css";
 ```
 
 
@@ -79,10 +84,10 @@ Use the standalone files like this:
 <!-- Module Faz quill emoji -->
 <link
   rel="stylesheet"
-  href="https://unpkg.com/faz-quill-emoji@0.1.0/dist/faz-quill-emoji.css"
+  href="https://unpkg.com/faz-quill-emoji@0.1.0/dist/faz.quill.emoji.css"
   type="text/css"
 />
-<script src="https://unpkg.com/faz-quill-emoji@0.1.0/dist/faz-quill-emoji.iife.js></script>
+<script src="https://unpkg.com/faz-quill-emoji@0.1.0"></script>
 
 <div id="editor"></div>
 
@@ -144,7 +149,7 @@ const quill = new Quill('#editor', {
 | name          | type     | description                                                                                                                                                                                                                                                                  |
 |---------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | collection    | string   | Collection of emoji to display. Allowed values: 'native' ,  'openmoji' ,  'twemoji' ,  'noto' ,  'fluent-emoji' ,  'fluent-emoji-flat' ,  'fluent-emoji-high-contrast' ,  'noto-v1' ,  'emojione' ,  'emojione-monotone' ,  'emojione-v1' ,  'fxemoji' ,  'streamline-emojis'. Default: 'native' |
-| popper        | object   | The popper library for more advanced drop-down menu positioning.                                                                                                                                                                                                             |
+| popper        | object   | The [popper library](https://popper.js.org/docs/v2/#usage) for more advanced drop-down menu positioning.                                                                                                                                                                                                             |
 | popperConfig  | object   | Specify Popper's custom options. This gives you full control over the drop-down positioning. See [Popper's docs](https://popper.js.org/docs/v2/) for more details.                                                                                                                                             |
 | rewriteCDNURL(url) | function | Emoji images, with the exception of 'native', come from a cdn if you want to rewrite this url you must use this option. asynchronous functions are accepted                                                                                                                  |
 

@@ -27,24 +27,31 @@
   },
   "homepage": "https://github.com/fazdiu/faz-quill-emoji#readme",
   "files": [
-    "./dist"
+    "./dist",
+    "src",
+    "LICENSE",
+    "README.md"
   ],
   "type": "module",
-  "main": "./dist/faz-quill-emoji.cjs.js",
-  "module": "./dist/faz-quill-emoji.esm.js",
+  "main": "./dist/index.cjs.js",
+  "module": "./dist/index.esm.js",
   "exports": {
     ".": {
-      "require": "./dist/faz-quill-emoji.cjs.js",
-      "import": "./dist/faz-quill-emoji.esm.js"
+      "require": "./dist/index.cjs.js",
+      "import": "./dist/index.esm.js"
     },
     "./autoregister": {
-      "require": "./dist/autoregister/faz-quill-emoji.cjs.js",
-      "import": "./dist/autoregister/faz-quill-emoji.esm.js"
+      "require": "./dist/autoregister.cjs.js",
+      "import": "./dist/autoregister.esm.js"
     }
   },
-  "unpkg": "./dist/autoregister/faz-quill-emoji.iife.js",
+  "unpkg": "./dist/autoregister.iife.js",
   "devDependencies": {
     "esbuild": "^0.21.5",
-    "esbuild-minify-templates": "^0.11.0"
+    "esbuild-minify-templates": "^0.11.0",
+    "esbuild-plugin-external-global": "^1.0.1"
+  },
+  "dependencies": {
+    "quill": "^2.0.2"
   }
 }
