@@ -169,16 +169,13 @@ const EmojiCore = class EmojisWrapper {
 
                         result.searchInputElement = searchInputEl;
 
-                        let active = null;
                         let timeoutId = null;
                         searchInputEl.addEventListener('input', (e) => {
                             clearTimeout(timeoutId);
                             timeoutId = setTimeout(() => {
 
                                 emojiListEl.innerHTML = '';
-                                active && (active.currentPage = 0);
-
-                                this.loadEmojisInActiveTab('first').then((v) => active = v);
+                                this.loadEmojisInActiveTab('first', true);
 
                             }, 300);
                         });
@@ -398,7 +395,7 @@ const EmojiCore = class EmojisWrapper {
     async getEmojisByCategory(name = "native") {
         const groupBy = (emojisByCategory = {}, prefix = '') => {
             const emojisByCategoryArr = Object.entries(emojisByCategory);
-          
+
             const getCategory = (arr, value) =>
                 arr.find((c) => {
                     const concat = c.otherNames.concat(c.name);
@@ -427,7 +424,19 @@ const EmojiCore = class EmojisWrapper {
             let emojiId = 0;
             const allEmojis = emojisByCategoryArr.flatMap((v) => {
                 const [categoryName, emojis] = v;
-                const category = getCategory(categories, categoryName)?.name;
+                const category = getCategory(categories, categoryName);
+                const calcOrder = (emName) => {
+                    emName = emName.toLowerCase();
+                    const Keywoards = ['face', 'loudly', 'crying', 'tears', 'joy', 'rolling', 'floor', 'laughing', 'smiling', 'heart-eyes', 'heart-shaped'];
+                    const count = Keywoards.length;
+                    const results = Keywoards.map((k) => emName.indexOf(k) > -1 ? 1 : 0);
+                    const sum = results.reduce((a, b) => a + b, 0);
+                    return sum > 0 ? count / sum : count + 1;
+                };
+
+                if (!category) {
+                    console.warn('The emojis category not found', { categoryName, emojis });
+                }
 
                 return emojis
                     .map((em) => {
@@ -438,7 +447,9 @@ const EmojiCore = class EmojisWrapper {
                             ...obj,
                             id: emojiId,
                             collection: prefix,
-                            category
+                            order: calcOrder(obj.name),
+                            category: category?.name,
+                            categoryOrder: category?.order || 5000,
                         }
                     });
             });
@@ -499,9 +510,10 @@ const EmojiCore = class EmojisWrapper {
     /**
      * Filter, load, and paginate emojis for the active tab
      * @param {null|'first'|'next'} [pageString=null] 
+     * @param {boolean} [reset=false] 
      * @returns 
      */
-    async loadEmojisInActiveTab(pageString = null) {
+    async loadEmojisInActiveTab(pageString = null, reset = false) {
         const active = this.tabGroup.find((t) => t.tabElement.classList.contains('active'));
         if (!active) return;
 
@@ -511,7 +523,6 @@ const EmojiCore = class EmojisWrapper {
 
         const leakedEmojis = main.allEmojis.reduce((ac, em) => {
             let bool = true;
-            let order = undefined;
             const { name, category } = em;
 
             if (active.name == 'all') {
@@ -519,7 +530,6 @@ const EmojiCore = class EmojisWrapper {
                 if (value) {
                     const r = value.trim().split(' ').map((v) => name.toUpperCase().indexOf(v.toUpperCase()) > -1);
                     bool = r.every((v) => v);
-                    order = r.filter((v) => v).length;
                 }
 
             } else {
@@ -527,33 +537,23 @@ const EmojiCore = class EmojisWrapper {
             }
 
             if (bool) {
-                ac.push({ ...em, order })
+                ac.push({ ...em })
             }
 
             return ac;
-        }, []).sort((a, b) => {
-            if (typeof a.order !== "undefined") return Number(a.order) - Number(b.order);
-
-            if (typeof a.name === "string") return a.name.indexOf('face') > -1 ? -1 : 0;
-
-            return 0;
-        });
+        }, []).sort((a, b) => Number(`${a.categoryOrder}${a.order}`) - Number(`${b.categoryOrder}${b.order}`));
 
         if (!leakedEmojis.length) return;
 
         let _page = null;
 
-        if (pageString == 'first') {
-            _page = currentPage < 2 ? 1 : null;
-        }
+        if (reset) currentPage = 0;
 
-        if (pageString == 'next') {
-            _page = currentPage + 1;
-        }
+        if (pageString == 'first') _page = currentPage < 2 ? 1 : null;
 
-        if (!_page) {
-            return;
-        }
+        if (pageString == 'next') _page = currentPage + 1;
+
+        if (!_page) return;
 
         const perPage = this.itemsPerPage;
         const skip = currentPage * perPage;

@@ -3,13 +3,6 @@ import icons from './icons';
 // @see https://icon-sets.iconify.design/mdi
 export default [
     {
-        icon: icons.others,
-        name: 'others',
-        order: 10,
-        otherNames: ['Extras Openmoji','extras unicode'],
-        default: true
-    },
-    {
         icon: icons.smiley,
         name: 'smileys emotion',
         order: 1,
@@ -18,50 +11,55 @@ export default [
     {
         icon: icons.people,
         name: 'people body',
-        order: 1.1,
+        order: 2,
         otherNames: ['people & body']
     },
     {
         icon: icons.food,
         name: 'food',
         otherNames: ['food drink', 'food & drink'],
-        order: 2,
+        order: 3,
     },
-
     {
         icon: icons.travel,
         name: 'travel',
-        order: 3,
+        order: 4,
         otherNames: ['travel places', 'Travel & places']
     },
     {
         icon: icons.objects,
         name: 'objects',
-        order: 4,
+        order: 5,
         otherNames: []
     },
     {
         icon: icons.activity,
         name: 'activity',
-        order: 5,
+        order: 6,
         otherNames: ['Activities']
     },
     {
         icon: icons.animals,
-        order: 6,
+        order: 7,
         name: 'animals',
         otherNames: ['nature', 'Animals nature', 'Animals & nature', 'Animals & places']
     },
     {
         icon: icons.flags,
         name: 'flags',
-        order: 7,
+        order: 8,
         otherNames: []
     },
     {
         icon: icons.symbols,
         name: 'symbols',
-        order: 8,
+        order: 9,
         otherNames: []
+    },
+    {
+        icon: icons.others,
+        name: 'others',
+        order: 10,
+        otherNames: ['Extras Openmoji','extras unicode'],
     }
 ]
