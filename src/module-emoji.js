@@ -268,6 +268,23 @@ const EmojiCore = class EmojisWrapper {
                 'pointer-events': ''
             });
 
+            // update the position drop-down menu when scrolling
+            document.addEventListener('scroll', (e) => {
+                    const { target } = e;
+                    const menu = this.dropdown;
+
+                    if (!menu) return;
+        
+                    const inside = menu.contains(target);
+        
+                    if (inside || target === menu) return;
+        
+                    const isOpen = menu.classList.contains('show');
+
+                    if (isOpen) {
+                        this.positioningEngineDropdown();
+                    }
+            }, true);
         }
 
         this.setStyle(this.dropdown, { display: '' });
@@ -336,7 +353,13 @@ const EmojiCore = class EmojisWrapper {
                             options: {
                                 mainAxis: true,
                             }
-                        }
+                        },
+                        {
+                            name: 'computeStyles',
+                            options: {
+                              gpuAcceleration: true
+                            },
+                          },
                     ],
                 };
                 const popperOptions = this.options.popperOptions || defaultOptions;
@@ -605,7 +628,7 @@ const EmojiCore = class EmojisWrapper {
                 buttonIcon.appendChild(ico);
             }
 
-            buttonIcon.setAttribute('title', name.replaceAll('-', ' '));
+            buttonIcon.setAttribute('title', name.replaceAll('-', ' ').replaceAll('_', ' '));
             frag.appendChild(buttonIcon);
             buttonIcon.addEventListener('click', async (e) => {
                 this.loader.toggle(true);
