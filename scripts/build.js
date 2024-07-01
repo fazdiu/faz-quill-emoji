@@ -3,14 +3,14 @@ import { minifyTemplates, writeFiles } from 'esbuild-minify-templates';
 import esbuildGlobal from 'esbuild-plugin-external-global';
 
 const licenseText = `/*!
-* Faz quill emoji 0.1.0
+* Faz quill emoji 0.1.1
 * Licensed under MIT, https://opensource.org/licenses/MIT/
 * Please visit https://github.com/fazdiu/faz-quill-emoji for details.
 */`;
 const config = {
     entryPoints: ['src/index.js'],
     bundle: true,
-    // minify: true,
+    minify: true,
     loader: {
         '.html': 'text',
     },

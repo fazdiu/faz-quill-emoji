@@ -84,10 +84,10 @@ Use the standalone files like this:
 <!-- Module Faz quill emoji -->
 <link
   rel="stylesheet"
-  href="https://unpkg.com/faz-quill-emoji@0.1.0/dist/faz.quill.emoji.css"
+  href="https://unpkg.com/faz-quill-emoji@0.1.1/dist/faz.quill.emoji.css"
   type="text/css"
 />
-<script src="https://unpkg.com/faz-quill-emoji@0.1.0"></script>
+<script src="https://unpkg.com/faz-quill-emoji@0.1.1"></script>
 
 <div id="editor"></div>
 
