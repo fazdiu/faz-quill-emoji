@@ -120,7 +120,7 @@ const EmojiCore = class EmojisWrapper {
             this.loader.element = element.loader;
 
             // create placeholder
-            Array.from({ length: 7 }, () => {
+            Array.from({ length: 6 }, () => {
                 const placeholder = element.tabPlaceholder;
                 const clone = placeholder.cloneNode();
                 placeholder.parentElement.appendChild(clone);
@@ -132,18 +132,17 @@ const EmojiCore = class EmojisWrapper {
             });
 
             this.getEmojisByCategory(collectionName).then((tabs) => {
-              
                 const fragmentTabList = document.createDocumentFragment();
                 const fragmentTabPanels = document.createDocumentFragment();
 
                 this.tabGroup = tabs.map((item) => {
-                    const { name, icon, categoryName } = item;
+                    const { name, icon, categoriesOr } = item;
 
                     const templateTab = element.templateTab;
                     const tabEl = templateTab.content.cloneNode(true).firstElementChild;
                     tabEl.innerHTML = icon;
                     tabEl.setAttribute('data-emoji-category', name);
-                    tabEl.setAttribute('data-emoji-category-or', categoryName);
+                    tabEl.setAttribute('data-emoji-category-or', String(categoriesOr || ''));
                     fragmentTabList.appendChild(tabEl);
 
                     const templateTabPanel = element.templateTabPanel;
@@ -180,7 +179,7 @@ const EmojiCore = class EmojisWrapper {
                                 active && (active.currentPage = 0);
 
                                 this.loadEmojisInActiveTab('first').then((v) => active = v);
-                         
+
                             }, 300);
                         });
 
@@ -399,24 +398,36 @@ const EmojiCore = class EmojisWrapper {
     async getEmojisByCategory(name = "native") {
         const groupBy = (emojisByCategory = {}, prefix = '') => {
             const emojisByCategoryArr = Object.entries(emojisByCategory);
+          
+            const getCategory = (arr, value) =>
+                arr.find((c) => {
+                    const concat = c.otherNames.concat(c.name);
+                    return concat.map((c) => c.toLowerCase()).includes(value.toLowerCase())
+                });
 
-            const categories = emojisByCategoryArr.map((v) => {
+            const categories = emojisByCategoryArr.reduce((ac, v) => {
                 const [categoryName] = v;
 
-                const item = emojiCategories.find((c) => c.otherNames.concat(c.name).map((c) => c.toLowerCase()).includes(categoryName.toLowerCase()))
+                const item = getCategory(emojiCategories, categoryName);
 
                 if (!item) {
                     console.warn('Category not found in the list:', { categoryName, prefix });
-                    return null;
+                } else {
+                    const exists = getCategory(ac, categoryName);
+                    if (!exists) {
+                        ac.push({ ...item, currentPage: 0, categoriesOr: [categoryName] });
+                    } else {
+                        exists.categoriesOr.push(categoryName);
+                    }
                 }
 
-                return { ...item, categoryName, currentPage: 0 }
-            }).filter((f) => f).sort((a, b) => a.order - b.order);
+                return ac;
+            }, []).sort((a, b) => a.order - b.order);
 
             let emojiId = 0;
             const allEmojis = emojisByCategoryArr.flatMap((v) => {
                 const [categoryName, emojis] = v;
-                const category = categories.find((c) => c.categoryName == categoryName)?.name;
+                const category = getCategory(categories, categoryName)?.name;
 
                 return emojis
                     .map((em) => {

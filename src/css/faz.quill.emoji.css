@@ -180,7 +180,7 @@
 .faz-quill-emoji-list-placeholder {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 10px;
+    gap: 14px;
 }
 
 .faz-quill-emoji-item-placeholder {
@@ -197,6 +197,7 @@
     min-width: 32px;
     min-height: 32px;
     margin-bottom:10px;
+    margin-left:4px;
     animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
 }
 
