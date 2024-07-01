@@ -1,6 +1,6 @@
 {
   "name": "faz-quill-emoji",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Easily add emojis to your Quill.js editor using this module extension. The toolbar at the top makes it simple to insert emojis into your content. ",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
