@@ -4,6 +4,8 @@ Faz Quill Emojis is a module that provides the functionality to easily add emoji
 | ![fluent-emoji!](./demo/screenshot/fluent-emoji.png "fluent-emoji")  | ![noto!](./demo/screenshot/noto.png "noto")   | ![twemoji!](./demo/screenshot/twemoji.png "twemoji")   |
 |---|---|---|
 
+### [Demo online](https://jsfiddle.net/6cnrz59k/)
+
 ## Quickstart
 
 ### Installation
@@ -84,10 +86,10 @@ Use the standalone files like this:
 <!-- Module Faz quill emoji -->
 <link
   rel="stylesheet"
-  href="https://unpkg.com/faz-quill-emoji@0.1.2/dist/faz.quill.emoji.css"
+  href="https://unpkg.com/faz-quill-emoji@0.1.3/dist/faz.quill.emoji.css"
   type="text/css"
 />
-<script src="https://unpkg.com/faz-quill-emoji@0.1.2"></script>
+<script src="https://unpkg.com/faz-quill-emoji@0.1.3"></script>
 
 <div id="editor"></div>
 
