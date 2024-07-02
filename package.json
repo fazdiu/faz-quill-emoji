@@ -43,6 +43,9 @@
     "./autoregister": {
       "require": "./dist/autoregister.cjs.js",
       "import": "./dist/autoregister.esm.js"
+    },
+    "./dist/*.css": {
+      "import": "./dist/*.css"
     }
   },
   "unpkg": "./dist/autoregister.iife.js",
